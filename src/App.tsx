@@ -1,5 +1,4 @@
 import { useState } from "react";
-import ProductCard from "./components/ProductCard";
 import ProductList from "./components/ProductList";
 import Header from "./components/Header";
 import { Product } from "./types/Product";
@@ -78,7 +77,7 @@ function App() {
         "https://m.media-amazon.com/images/I/61HHeBJ1xWL._AC_SX679_.jpg",
     },
   ];
-  const [products, setProducts] = useState<Product[]>(prods);
+  const [products, _] = useState<Product[]>(prods);
 
   return (
     <>

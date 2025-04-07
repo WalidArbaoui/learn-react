@@ -1,4 +1,3 @@
-import React from "react";
 import { Product } from "../types/Product";
 import ProductCard from "./ProductCard";
 import { SearchX } from "lucide-react";
