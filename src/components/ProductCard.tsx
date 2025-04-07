@@ -21,7 +21,7 @@ const ProductCard = ({ product, onAddToCart }: Props) => {
   const [showMore, setShowMore] = useState(false);
 
   return (
-    <div className="flex flex-col relative border border-gray-200 rounded hover:scale-101 hover:shadow-lg">
+    <div className="flex flex-col h-full relative border border-gray-200 rounded overflow-hidden hover:scale-101 hover:shadow-lg min-h-100 md:min-h-auto">
       <div className={`p-4 -z-10 ${showMore && "absolute"}`}>
         <img
           src={product.imageUrl}
@@ -29,7 +29,7 @@ const ProductCard = ({ product, onAddToCart }: Props) => {
           className="block aspect-square object-contain"
         />
       </div>
-      <div className="p-2 grow bg-white/90">
+      <div className={`p-2 grow bg-white/90`}>
         <div className="flex justify-between">
           <h3 className="font-bold">{product.name}</h3>
           {product.category && (
@@ -68,7 +68,7 @@ const ProductCard = ({ product, onAddToCart }: Props) => {
           )}
         </div>
       </div>
-      <div className="flex justify-between p-2">
+      <div className="flex justify-between p-2 bg-white/90">
         <button
           onClick={() => onAddToCart(product)}
           className="flex items-center gap-2 bg-cyan-800 text-white px-4 py-1 rounded-full hover:bg-cyan-900"
