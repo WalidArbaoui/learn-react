@@ -2,6 +2,8 @@ import { useState } from "react";
 import ProductList from "./components/ProductList";
 import Header from "./components/Header";
 import { Product } from "./types/Product";
+import { ToastContainer, toast } from "react-toastify";
+import { CartItem } from "./types/CartItem";
 
 function App() {
   const prods = [
@@ -78,12 +80,39 @@ function App() {
     },
   ];
   const [products, _] = useState<Product[]>(prods);
+  const [cart, setCart] = useState<CartItem[]>([]);
+  const [cartCount, setCartCount] = useState<number>(0);
 
+  const handleAddToCart = (product: Product) => {
+    setCartCount(cartCount + 1);
+    const prodInCart = cart.find((item) => item.id === product.id);
+    if (!prodInCart) {
+      const newCartItem: CartItem = {
+        ...product,
+        quantity: 1,
+      };
+      setCart([...cart, newCartItem]);
+      toast.success("Product Added Succesfuly");
+    } else {
+      prodInCart.quantity++;
+      toast.info(`Product Quantity Updated (${prodInCart.quantity})`);
+    }
+  };
   return (
     <>
-      <Header />
+      <Header cartCount={cartCount} />
       <main className="p-8 container mx-auto">
-        <ProductList products={products} />
+        <ProductList
+          products={products}
+          onAddToCart={handleAddToCart}
+          cartItems={cart}
+        />
+        <ToastContainer
+          position="bottom-right"
+          autoClose={2000}
+          newestOnTop={true}
+          limit={3}
+        />
       </main>
     </>
   );

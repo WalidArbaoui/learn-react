@@ -1,10 +1,12 @@
 import { useState } from "react";
 import { Product } from "../types/Product";
-import { ShoppingCart } from "lucide-react";
+import { Check, Plus, ShoppingCart } from "lucide-react";
+import { CartItem } from "../types/CartItem";
 
 type Props = {
   product: Product;
-  onAddToCart: any;
+  onAddToCart: (product: Product) => void;
+  cartItems: CartItem[];
 };
 
 interface categoryStylesType {
@@ -17,7 +19,7 @@ const categoryStyles: categoryStylesType = {
   Cap: "bg-purple-400",
 };
 
-const ProductCard = ({ product, onAddToCart }: Props) => {
+const ProductCard = ({ product, cartItems, onAddToCart }: Props) => {
   const [showMore, setShowMore] = useState(false);
 
   return (
@@ -69,13 +71,30 @@ const ProductCard = ({ product, onAddToCart }: Props) => {
         </div>
       </div>
       <div className="flex justify-between p-2 bg-white/90">
-        <button
-          onClick={() => onAddToCart(product)}
-          className="flex items-center gap-2 bg-cyan-800 text-white px-4 py-1 rounded-full hover:bg-cyan-900"
-        >
-          <ShoppingCart size={18} />
-          Add to cart
-        </button>
+        {cartItems.some((item) => item.id === product.id) ? (
+          <button
+            onClick={() => onAddToCart(product)}
+            className="group flex items-center gap-2 outline -outline-offset-1 outline-cyan-800 pl-2 pr-4 py-1 rounded-full overflow-hidden"
+          >
+            <div className="relative w-8 h-full">
+              <span className="absolute top-1/2 -translate-y-1/2  left-0 flex -translate-x-10  invisible items-baseline bg-yellow-500 rounded-full text-sm py-1 px-2 group-hover:visible group-hover:translate-x-0 transition duration-300">
+                <Plus size={10} /> <span className="leading-none">1</span>
+              </span>
+              <span className="absolute top-1/2 -translate-y-1/2 left-0 bg-emerald-400 rounded-full text-sm py-1 px-2 group-hover:translate-y-4 transition duration-300">
+                <Check size={14} />
+              </span>
+            </div>
+            Added to cart
+          </button>
+        ) : (
+          <button
+            onClick={() => onAddToCart(product)}
+            className="flex items-center gap-2 bg-cyan-800 text-white px-4 py-1 rounded-full hover:bg-cyan-900"
+          >
+            <ShoppingCart size={18} />
+            Add to cart
+          </button>
+        )}
         <div className="text-xl font-bold">${product.price.toFixed(2)}</div>
       </div>
     </div>

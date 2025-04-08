@@ -1,12 +1,15 @@
+import { CartItem } from "../types/CartItem";
 import { Product } from "../types/Product";
 import ProductCard from "./ProductCard";
 import { SearchX } from "lucide-react";
 
 type Props = {
   products: Product[];
+  onAddToCart: (product: Product) => void;
+  cartItems: CartItem[];
 };
 
-const ProductList = ({ products }: Props) => {
+const ProductList = ({ products, cartItems, onAddToCart }: Props) => {
   return (
     <div>
       {products.length ? (
@@ -18,9 +21,8 @@ const ProductList = ({ products }: Props) => {
             <ProductCard
               key={product.id}
               product={product}
-              onAddToCart={(product: Product) => {
-                console.log(product);
-              }}
+              onAddToCart={onAddToCart}
+              cartItems={cartItems}
             />
           ))}
         </div>
