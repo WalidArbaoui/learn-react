@@ -11,7 +11,7 @@ type Props = {
 
 const ProductList = ({ products, cartItems, onAddToCart }: Props) => {
   return (
-    <div>
+    <div className="">
       {products.length ? (
         <div
           data-testid="product-list-container"

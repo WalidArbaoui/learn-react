@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Product } from "../types/Product";
-import { Check, Plus, ShoppingCart } from "lucide-react";
+import { Check, ImageOff, Plus, ShoppingCart } from "lucide-react";
 import { CartItem } from "../types/CartItem";
 
 type Props = {
@@ -21,14 +21,29 @@ const categoryStyles: categoryStylesType = {
 
 const ProductCard = ({ product, cartItems, onAddToCart }: Props) => {
   const [showMore, setShowMore] = useState(false);
+  const [imgLoaded, setImgLoaded] = useState(false);
+  const [imgFailed, setImgFailed] = useState(false);
 
   return (
     <div className="flex flex-col h-full relative border border-gray-200 rounded overflow-hidden hover:scale-101 hover:shadow-lg min-h-100 md:min-h-auto">
       <div className={`p-4 -z-10 ${showMore && "absolute"}`}>
+        {!imgLoaded && !imgFailed && (
+          <div className="aspect-square bg-gray-400 rounded-lg animate-pulse"></div>
+        )}
+        {imgFailed && (
+          <div className="flex flex-col items-center justify-center aspect-square text-gray-400 bg-gray-300 rounded-lg">
+            <ImageOff size={64} />
+            Image failed to load
+          </div>
+        )}
         <img
           src={product.imageUrl}
           alt={product.name}
-          className="block aspect-square object-contain"
+          onLoad={() => setImgLoaded(true)}
+          onError={() => setImgFailed(true)}
+          className={`block aspect-square object-contain ${
+            imgFailed && "hidden"
+          }`}
         />
       </div>
       <div className={`p-2 grow bg-white/90`}>
@@ -70,7 +85,7 @@ const ProductCard = ({ product, cartItems, onAddToCart }: Props) => {
           )}
         </div>
       </div>
-      <div className="flex justify-between p-2 bg-white/90">
+      <div className="flex justify-between p-2 bg-white/90 border-t border-gray-100">
         {cartItems.some((item) => item.id === product.id) ? (
           <button
             onClick={() => onAddToCart(product)}
