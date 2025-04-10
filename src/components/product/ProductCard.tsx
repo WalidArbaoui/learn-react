@@ -1,12 +1,10 @@
 import { useState } from "react";
-import { Product } from "../types/Product";
+import { Product } from "../../types/Product";
 import { Check, ImageOff, Plus, ShoppingCart } from "lucide-react";
-import { CartItem } from "../types/CartItem";
+import { useCart } from "../../context/CartContext";
 
 type Props = {
   product: Product;
-  onAddToCart: (product: Product) => void;
-  cartItems: CartItem[];
 };
 
 interface categoryStylesType {
@@ -19,16 +17,18 @@ const categoryStyles: categoryStylesType = {
   Cap: "bg-purple-400",
 };
 
-const ProductCard = ({ product, cartItems, onAddToCart }: Props) => {
+const ProductCard = ({ product }: Props) => {
   const [showMore, setShowMore] = useState(false);
   const [imgLoaded, setImgLoaded] = useState(false);
   const [imgFailed, setImgFailed] = useState(false);
+
+  const { cart, addToCart } = useCart();
 
   return (
     <div className="flex flex-col h-full relative border border-gray-200 rounded overflow-hidden hover:scale-101 hover:shadow-lg min-h-100 md:min-h-auto">
       <div className={`p-4 -z-10 ${showMore && "absolute"}`}>
         {!imgLoaded && !imgFailed && (
-          <div className="aspect-square bg-gray-400 rounded-lg animate-pulse"></div>
+          <div className="aspect-square bg-gray-200 rounded-lg animate-pulse"></div>
         )}
         {imgFailed && (
           <div className="flex flex-col items-center justify-center aspect-square text-gray-400 bg-gray-300 rounded-lg">
@@ -86,9 +86,9 @@ const ProductCard = ({ product, cartItems, onAddToCart }: Props) => {
         </div>
       </div>
       <div className="flex justify-between p-2 bg-white/90 border-t border-gray-100">
-        {cartItems.some((item) => item.id === product.id) ? (
+        {cart.some((item) => item.id === product.id) ? (
           <button
-            onClick={() => onAddToCart(product)}
+            onClick={() => addToCart(product)}
             className="group flex items-center gap-2 outline -outline-offset-1 outline-cyan-800 pl-2 pr-4 py-1 rounded-full overflow-hidden"
           >
             <div className="relative w-8 h-full">
@@ -103,7 +103,7 @@ const ProductCard = ({ product, cartItems, onAddToCart }: Props) => {
           </button>
         ) : (
           <button
-            onClick={() => onAddToCart(product)}
+            onClick={() => addToCart(product)}
             className="flex items-center gap-2 bg-cyan-800 text-white px-4 py-1 rounded-full hover:bg-cyan-900"
           >
             <ShoppingCart size={18} />
